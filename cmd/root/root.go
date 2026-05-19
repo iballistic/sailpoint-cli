@@ -15,6 +15,7 @@ import (
 	"github.com/sailpoint-oss/sailpoint-cli/cmd/sdk"
 	"github.com/sailpoint-oss/sailpoint-cli/cmd/search"
 	"github.com/sailpoint-oss/sailpoint-cli/cmd/set"
+	"github.com/sailpoint-oss/sailpoint-cli/cmd/source"
 	"github.com/sailpoint-oss/sailpoint-cli/cmd/spconfig"
 	"github.com/sailpoint-oss/sailpoint-cli/cmd/transform"
 	"github.com/sailpoint-oss/sailpoint-cli/cmd/va"
@@ -69,6 +70,9 @@ func NewRootCommand() *cobra.Command {
 		workflow.NewWorkflowCommand(),
 		sanitize.NewSanitizeCommand(),
 		reassign.NewReassignCommand(),
+		//custom code begin
+		source.NewSourceformCommand(),
+		//custom code end
 	)
 
 	root.PersistentFlags().StringVarP(&env, "env", "", "", "Environment to use for SailPoint CLI commands")
