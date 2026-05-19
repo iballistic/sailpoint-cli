@@ -18,7 +18,7 @@ import (
 )
 
 func newListCommand() *cobra.Command {
-	var queryParams []string
+	var filters string
 	var outputFile string
 	var prettyPrint bool
 	cmd := &cobra.Command{
@@ -36,7 +36,7 @@ func newListCommand() *cobra.Command {
 			}
 
 			sources, resp, err := sailpoint.PaginateWithDefaults[v3.Source](
-				apiClient.V3.SourcesAPI.ListSources(context.TODO()),
+				apiClient.V3.SourcesAPI.ListSources(context.TODO()).Filters(filters),
 			)
 			if err != nil {
 				return sdk.HandleSDKError(resp, err)
@@ -82,7 +82,7 @@ func newListCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().StringArrayVarP(&queryParams, "query", "q", []string{}, "Query parameters (can be used multiple times, format: 'key=value')")
+	cmd.Flags().StringVarP(&filters, "query", "q", "", "Filter to search and return matching sources")
 	cmd.Flags().StringVarP(&outputFile, "output", "o", "", "Output file to save the response (if not specified, prints basic info to stdout)")
 	cmd.Flags().BoolVarP(&prettyPrint, "pretty", "p", false, "Pretty print JSON response")
 	return cmd
@@ -92,3 +92,6 @@ func newListCommand() *cobra.Command {
 func writeToFile(filename string, data []byte) error {
 	return os.WriteFile(filename, data, 0644)
 }
+
+
+//example: sailpoint-cli.exe source ls -q "connectorName  in (\"Active Directory\",\"Workday\")"
